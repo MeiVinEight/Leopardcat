@@ -25,12 +25,19 @@ public class HTTPRequest
 		String line = this.property();
 		if (this.connection.connecting())
 		{
-			String[] split = line.split(" ");
-			this.method = split[0];
-			this.URL = split[1];
-			String[] protocol = split[2].split("/");
-			this.protocol = protocol[0];
-			this.version = protocol[1];
+			try
+			{
+				String[] split = line.split(" ");
+				this.method = split[0];
+				this.URL = split[1];
+				String[] protocol = split[2].split("/");
+				this.protocol = protocol[0];
+				this.version = protocol[1];
+			}
+			catch (Throwable t)
+			{
+				throw new IOException("Unknown HTTP: " + line);
+			}
 		}
 		else
 		{

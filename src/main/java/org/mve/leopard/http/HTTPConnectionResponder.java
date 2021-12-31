@@ -50,7 +50,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 
 							if ("www.mve.ink".equals(request.property("Host")) || "mve.ink".equals(request.property("Host")) || "mve.zoyn.top".equals(request.property("Host")) || "106.54.163.152".equals(request.property("Host")) || "127.0.0.1".equals(request.property("Host")))
 							{
-								if ("/".equals(request.URL))
+								if (request.URL == null || "/".equals(request.URL))
 								{
 									File resource = new File(Leopardcat.ROOT, "rfx/README.html");
 									respond.property("Content-Type", "text/html");

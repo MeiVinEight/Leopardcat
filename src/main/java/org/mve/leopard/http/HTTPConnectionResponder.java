@@ -70,7 +70,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 									respond.property("Connection", "close");
 									respond.property("Content-Type", "image/jpeg");
 									keep = false;
-									URL url = new URL("http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1");
+									URL url = new URL("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1");
 									HttpURLConnection huc = (HttpURLConnection) url.openConnection();
 									JsonObject json = (JsonObject) JsonParser.parseReader(new InputStreamReader(huc.getInputStream()));
 									huc.getInputStream().close();

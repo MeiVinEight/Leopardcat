@@ -85,7 +85,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 								}
 								else
 								{
-									File resource = new File(new File(Leopardcat.ROOT, "rfx"), request.URL.substring(1));
+									File resource = new File(Leopardcat.ROOT, request.URL.substring(1));
 									if (resource.isFile())
 									{
 										respond.property("Content-Type", HTTP.type(resource.getName()));

@@ -65,6 +65,21 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 										e.printStackTrace();
 									}
 								}
+								else if ("/style.css".equals(request.URL))
+								{
+									File resource = new File(Leopardcat.ROOT, "rfx/style.css");
+									respond.property("Content-Type", "text/css");
+									respond.property("Content-Length", String.valueOf(resource.length()));
+
+									try (FileInputStream in = new FileInputStream(resource))
+									{
+										IO.copy(in, respond.content);
+									}
+									catch (IOException e)
+									{
+										e.printStackTrace();
+									}
+								}
 								else if ("/background".equals(request.URL))
 								{
 									respond.property("Connection", "close");

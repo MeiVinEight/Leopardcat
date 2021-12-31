@@ -13,9 +13,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 {
+	private static final Map<String, File> RESOURCE = new HashMap<>();
+
 	@Override
 	public void run()
 	{
@@ -50,22 +54,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 
 							if ("www.mve.ink".equals(request.property("Host")) || "mve.ink".equals(request.property("Host")) || "mve.zoyn.top".equals(request.property("Host")) || "106.54.163.152".equals(request.property("Host")) || "127.0.0.1".equals(request.property("Host")))
 							{
-								if (request.URL == null || "/".equals(request.URL))
-								{
-									File resource = new File(Leopardcat.ROOT, "rfx/README.html");
-									respond(respond, resource);
-								}
-								else if ("/style.css".equals(request.URL))
-								{
-									File resource = new File(Leopardcat.ROOT, "rfx/style.css");
-									respond(respond, resource);
-								}
-								else if ("/page".equals(request.URL))
-								{
-									File resource = new File(Leopardcat.ROOT, "page/index.html");
-									respond(respond, resource);
-								}
-								else if ("/background".equals(request.URL))
+								if ("/background".equals(request.URL))
 								{
 									respond.property("Connection", "close");
 									respond.property("Content-Type", "image/jpeg");
@@ -82,6 +71,10 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 									huc.getInputStream().close();
 									huc.disconnect();
 									respond.property("Content-Length", String.valueOf(respond.content.size()));
+								}
+								else if (RESOURCE.get(request.URL) != null)
+								{
+									respond(respond, RESOURCE.get(request.URL));
 								}
 								else
 								{
@@ -153,5 +146,13 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 			file = file.getParentFile();
 		}
 		return false;
+	}
+
+	static
+	{
+		RESOURCE.put(null, new File(Leopardcat.ROOT, "rfx/README.html"));
+		RESOURCE.put("/", new File(Leopardcat.ROOT, "rfx/README.html"));
+		RESOURCE.put("/style.css", new File(Leopardcat.ROOT, "rfx/style.css"));
+		RESOURCE.put("/page", new File(Leopardcat.ROOT, "page/index.html"));
 	}
 }

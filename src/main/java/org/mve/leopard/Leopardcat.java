@@ -129,15 +129,35 @@ public class Leopardcat
 
 	public static void main(String[] args)
 	{
-		try
+		Thread t0 = Thread.currentThread();
+		Thread t1 = new Thread(() ->
 		{
-			Thread.currentThread().setName("00000000");
-			Leopardcat ins = new Leopardcat(80);
-			ins.start();
-		}
-		catch (Throwable e)
+			try
+			{
+				Leopardcat ins = new Leopardcat(80);
+				ins.start();
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
+		Thread t2 = new Thread(() ->
 		{
-			e.printStackTrace();
-		}
+			try
+			{
+				Leopardcat ins = new Leopardcat(443);
+				ins.start();
+			}
+			catch (Throwable e)
+			{
+				e.printStackTrace();
+			}
+		});
+		t0.setName(LeopardcatFactory.name(0, 0, t0.getId()));
+		t1.setName(LeopardcatFactory.name(0, 0, t1.getId()));
+		t2.setName(LeopardcatFactory.name(0, 0, t2.getId()));
+		t1.start();
+		t2.start();
 	}
 }

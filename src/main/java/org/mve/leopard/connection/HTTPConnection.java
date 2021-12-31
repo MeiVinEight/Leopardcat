@@ -43,6 +43,5 @@ public class HTTPConnection
 	public void close() throws IOException
 	{
 		this.socket.close();
-		System.out.println(Leopardcat.prefix() + " Disconnecting " + this.address());
 	}
 }

@@ -119,13 +119,10 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 							{
 								e.printStackTrace();
 							}
-
-							if (!keep)
-							{
-								System.out.println(Leopardcat.prefix() + " Disconnecting " + connection.address());
-							}
 						}
+
 					}
+					System.out.println(Leopardcat.prefix() + " Disconnecting " + connection.address());
 				}
 				else
 				{

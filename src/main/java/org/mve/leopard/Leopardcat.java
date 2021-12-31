@@ -21,7 +21,7 @@ public class Leopardcat
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss:SSS");
 	private static int count = 1;
 	public final Object L = new Object();
-	public static final File ROOT = new File("resource");
+	public static final File ROOT = new File("resource").getAbsoluteFile();
 	private final ServerSocket server;
 	public final Queue<HTTPConnection> connection = new ConcurrentLinkedQueue<>();
 	private boolean running = false;

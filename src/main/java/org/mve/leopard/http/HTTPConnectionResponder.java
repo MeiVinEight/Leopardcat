@@ -86,7 +86,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 								else
 								{
 									File resource = new File(Leopardcat.ROOT, request.URL.substring(1));
-									if (resource.isFile())
+									if (resource.isFile() && check(resource))
 									{
 										respond.property("Content-Type", HTTP.type(resource.getName()));
 										respond.property("Content-Length", String.valueOf(resource.length()));
@@ -134,5 +134,19 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 				t.printStackTrace();
 			}
 		}
+	}
+
+	public static boolean check(File file)
+	{
+		file = file.getAbsoluteFile();
+		while (file != null)
+		{
+			if (file.equals(Leopardcat.ROOT))
+			{
+				return true;
+			}
+			file = file.getParentFile();
+		}
+		return false;
 	}
 }

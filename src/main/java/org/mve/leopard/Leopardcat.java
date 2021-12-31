@@ -158,6 +158,6 @@ public class Leopardcat
 		t1.setName(LeopardcatFactory.name(0, 0, t1.getId()));
 		t2.setName(LeopardcatFactory.name(0, 0, t2.getId()));
 		t1.start();
-		t2.start();
+//		t2.start(); // HTTPs unsupported
 	}
 }

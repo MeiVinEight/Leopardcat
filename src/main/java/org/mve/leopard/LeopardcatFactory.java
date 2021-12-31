@@ -18,7 +18,12 @@ public class LeopardcatFactory implements ThreadFactory
 	public Thread newThread(Runnable r)
 	{
 		Thread t = new Thread(r);
-		t.setName(new String(Hexadecimal.transform(((long) this.ID << 24) | (this.count++ << 16) | t.getId())).substring(8));
+		t.setName(name(this.ID, this.count++, t.getId()));
 		return t;
+	}
+
+	public static String name(int ID, int count, long tid)
+	{
+		return new String(Hexadecimal.transform(((long) ID << 24) | ((long) count << 16) | tid)).substring(8);
 	}
 }

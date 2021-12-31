@@ -53,32 +53,17 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 								if (request.URL == null || "/".equals(request.URL))
 								{
 									File resource = new File(Leopardcat.ROOT, "rfx/README.html");
-									respond.property("Content-Type", "text/html");
-									respond.property("Content-Length", String.valueOf(resource.length()));
-
-									try (FileInputStream in = new FileInputStream(resource))
-									{
-										IO.copy(in, respond.content);
-									}
-									catch (IOException e)
-									{
-										e.printStackTrace();
-									}
+									respond(respond, resource);
 								}
 								else if ("/style.css".equals(request.URL))
 								{
 									File resource = new File(Leopardcat.ROOT, "rfx/style.css");
-									respond.property("Content-Type", "text/css");
-									respond.property("Content-Length", String.valueOf(resource.length()));
-
-									try (FileInputStream in = new FileInputStream(resource))
-									{
-										IO.copy(in, respond.content);
-									}
-									catch (IOException e)
-									{
-										e.printStackTrace();
-									}
+									respond(respond, resource);
+								}
+								else if ("/page".equals(request.URL))
+								{
+									File resource = new File(Leopardcat.ROOT, "page/index.html");
+									respond(respond, resource);
 								}
 								else if ("/background".equals(request.URL))
 								{
@@ -103,17 +88,7 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 									File resource = new File(Leopardcat.ROOT, request.URL.substring(1));
 									if (resource.isFile() && check(resource))
 									{
-										respond.property("Content-Type", HTTP.type(resource.getName()));
-										respond.property("Content-Length", String.valueOf(resource.length()));
-
-										try (FileInputStream in = new FileInputStream(resource))
-										{
-											IO.copy(in, respond.content);
-										}
-										catch (IOException e)
-										{
-											e.printStackTrace();
-										}
+										respond(respond, resource);
 									}
 									else
 									{
@@ -148,6 +123,21 @@ public record HTTPConnectionResponder(Leopardcat server) implements Runnable
 			{
 				t.printStackTrace();
 			}
+		}
+	}
+
+	public static void respond(HTTPRespond respond, File resource)
+	{
+		respond.property("Content-Type", HTTP.type(resource.getName()));
+		respond.property("Content-Length", String.valueOf(resource.length()));
+
+		try (FileInputStream in = new FileInputStream(resource))
+		{
+			IO.copy(in, respond.content);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
